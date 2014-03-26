@@ -1,0 +1,9 @@
+default:
+  paths:
+    features: test/features
+  extensions:
+    Behat\MinkExtension\Extension:
+      default_session: selenium2
+      selenium2: ~
+  filters:
+    tags: "~@todo"
