@@ -1,6 +1,7 @@
 default:
   paths:
     features: test/features
+    bootstrap: test/bootstrap
   extensions:
     Behat\MinkExtension\Extension:
       default_session: selenium2
