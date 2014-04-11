@@ -19,6 +19,7 @@ class Authentication extends RawMinkContext
 
     /**
      * @Given /^(?:|I )am not signed in$/
+     * @When /^(?:I )sign out$/
      */
     public function iAmNotSignedIn()
     {
@@ -30,6 +31,7 @@ class Authentication extends RawMinkContext
 
     /**
      * @Given /^(?:|I )am signed in$/
+     * @When /^(?:I )sign in$/
      */
     public function iAmSignedIn()
     {
@@ -63,13 +65,7 @@ class Authentication extends RawMinkContext
 
         $this->username = $config['meetup']['registered-user']['username'];
         $this->password = $config['meetup']['registered-user']['password'];
-    }
 
-    /**
-     * @BeforeScenario @new-member
-     */
-    public function beforeScenarioForNewMember()
-    {
-        // create a new member
+        $this->printDebug("Authentication configured for user \"{$this->username}\".");
     }
 }
