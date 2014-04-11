@@ -6,10 +6,10 @@ Feature:
   @required-member
   Scenario: I can sign in and see events.
     Given I am signed in
-    And I am on "http://www.meetup.com/sf-php/"
-    Then I can see events for the group
+    When I go to "http://www.meetup.com/sf-php/"
+    Then I should see upcoming and past events
 
   Scenario: I can see events when signed out.
     Given I am not signed in
-    And I am on "http://www.meetup.com/sf-php/"
-    Then I can see events for the group
+    When I go to "http://www.meetup.com/sf-php/"
+    Then I should see upcoming and past events

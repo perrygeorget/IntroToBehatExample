@@ -11,9 +11,10 @@ namespace Meetup;
 use Behat\Behat\Exception\PendingException;
 use Behat\MinkExtension\Context\RawMinkContext;
 
-class GroupHome extends RawMinkContext {
+class GroupHome extends RawMinkContext
+{
     /**
-     * @Then /^I can see events for the group$/
+     * @Then /^I should see upcoming and past events$/
      */
     public function iCanSeeEventsForTheGroup()
     {
@@ -21,6 +22,7 @@ class GroupHome extends RawMinkContext {
         /** @var \Behat\MinkExtension\Context\MinkContext $mink */
         $mink = $main->getSubcontext('mink');
 
+        // Verify the existance of some things on the page that
         $mink->assertElementOnPage('#upcomingTab');
         $mink->assertElementOnPage('#pastTab');
     }

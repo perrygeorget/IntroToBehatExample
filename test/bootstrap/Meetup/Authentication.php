@@ -26,6 +26,8 @@ class Authentication extends RawMinkContext
         $main = $this->getMainContext();
         /** @var \Behat\MinkExtension\Context\MinkContext $mink */
         $mink = $main->getSubcontext('mink');
+
+        // I go to the logout page.
         $mink->visit('http://www.meetup.com/logout');
     }
 
@@ -35,19 +37,21 @@ class Authentication extends RawMinkContext
      */
     public function iAmSignedIn()
     {
-        // Make sure we are logged out first.
-        $this->iAmNotSignedIn();
-
         $main = $this->getMainContext();
         /** @var \Behat\MinkExtension\Context\MinkContext $mink */
         $mink = $main->getSubcontext('mink');
 
+        // Make sure we are logged out first.
+        $this->iAmNotSignedIn();
+
+        // Go to the homepage, a known place.
         $mink->visit('http://www.meetup.com');
+
+        // Sign in
         $mink->clickLink('Log in');
         $mink->fillField('email', $this->username);
         $mink->fillField('password', $this->password);
         $mink->pressButton('Log in');
-
     }
 
     /**
@@ -55,7 +59,8 @@ class Authentication extends RawMinkContext
      */
     public function beforeScenarioForRequiredMember()
     {
-        // The file is located at the top of the code base.
+        // Load the configuration file that contains the required data.
+        // (The file is located at the top of the code base.)
         $yamlFile = __DIR__ . '/../../../configuration.yml';
         $config = Yaml::parse($yamlFile);
 
@@ -63,9 +68,11 @@ class Authentication extends RawMinkContext
             throw new InvalidConfigurationException(realpath($yamlFile) . ' not found.');
         }
 
+        // Store the username and password to properties of the instance of this object.
         $this->username = $config['meetup']['registered-user']['username'];
         $this->password = $config['meetup']['registered-user']['password'];
 
+        // Let the end user know what we did.  (This is mostly because this *is* a demo.)
         $this->printDebug("Authentication configured for user \"{$this->username}\".");
     }
 }
