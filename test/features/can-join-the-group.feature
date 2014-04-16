@@ -10,6 +10,7 @@ Feature:
     When I go to "http://www.meetup.com/sf-php/"
     Then I should be able to join the group
 
+  # Requires the execution of the previous scenario.
   Scenario: I can leave the group
     Given I am signed in
     When I go to "http://www.meetup.com/sf-php/"
