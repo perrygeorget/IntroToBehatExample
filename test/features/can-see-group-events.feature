@@ -1,5 +1,6 @@
+@maintains-authentication-state @logout-before-scenario @logout-after-scenario
 Feature:
-  In order to register for the SF PHP Meetup group
+  In order to attend events for the SF PHP Meetup group
   As a member of the developer community
   I need to be able to find future events
 

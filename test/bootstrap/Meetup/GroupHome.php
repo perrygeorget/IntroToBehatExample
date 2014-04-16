@@ -1,14 +1,10 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: george
- * Date: 4/6/14
- * Time: 7:29 PM
+ * Steps definitions for sf-php meetup group home page.
  */
 
 namespace Meetup;
 
-use Behat\Behat\Exception\PendingException;
 use Behat\MinkExtension\Context\RawMinkContext;
 
 class GroupHome extends RawMinkContext

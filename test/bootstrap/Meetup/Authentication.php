@@ -1,13 +1,11 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: george
- * Date: 4/6/14
- * Time: 7:29 PM
+ * Step definitions for meetup authentication.
  */
 
 namespace Meetup;
 
+use Behat\Behat\Event\StepEvent;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Yaml\Yaml;
@@ -16,6 +14,25 @@ class Authentication extends RawMinkContext
 {
     private $username;
     private $password;
+    private $authenticationStateLoggedIn;
+
+    /**
+     * @BeforeStep @maintains-authentication-state
+     */
+    public function beforeStepObtainAuthenticationState(StepEvent $event)
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $element = $page->findById("nav-profile");
+        $this->authenticationStateLoggedIn = $element && $element->isVisible();
+
+        // Let the end user know what we did.  (This is mostly because this *is* a demo.)
+        if ($this->authenticationStateLoggedIn) {
+            $this->printDebug('[BeforeStepEvent] A user is signed in.');
+        } else {
+            $this->printDebug('[BeforeStepEvent] A user is not signed in.');
+        }
+    }
 
     /**
      * @Given /^(?:|I )am not signed in$/
@@ -37,12 +54,13 @@ class Authentication extends RawMinkContext
      */
     public function iAmSignedIn()
     {
+        if ($this->authenticationStateLoggedIn === true) {
+            throw new \Exception('Can not sign in, because a user is already signed in.');
+        }
+
         $main = $this->getMainContext();
         /** @var \Behat\MinkExtension\Context\MinkContext $mink */
         $mink = $main->getSubcontext('mink');
-
-        // Make sure we are logged out first.
-        $this->iAmNotSignedIn();
 
         // Go to the homepage, a known place.
         $mink->visit('http://www.meetup.com');
@@ -73,6 +91,20 @@ class Authentication extends RawMinkContext
         $this->password = $config['meetup']['registered-user']['password'];
 
         // Let the end user know what we did.  (This is mostly because this *is* a demo.)
-        $this->printDebug("Authentication configured for user \"{$this->username}\".");
+        $this->printDebug("[BeforeScenarioEvent] Authentication configured for user \"{$this->username}\".");
+    }
+
+    /**
+     * @BeforeScenario @logout-before-scenario
+     * @AfterScenario @logout-after-scenario
+     */
+    public function afterScenarioEnsureLoggedOut()
+    {
+        if ($this->authenticationStateLoggedIn === false) {
+            return;
+        }
+
+        $this->printDebug('[ScenarioEvent] Ensure that the user is logged out.');
+        $this->iAmNotSignedIn();
     }
 }
