@@ -5,34 +5,17 @@
 
 namespace Meetup;
 
+use AbstractContext;
 use Behat\Behat\Event\StepEvent;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Yaml\Yaml;
 
-class Authentication extends RawMinkContext
+class Authentication extends AbstractContext
 {
     private $username;
     private $password;
     private $authenticationStateLoggedIn;
-
-    /**
-     * @BeforeStep @maintains-authentication-state
-     */
-    public function beforeStepObtainAuthenticationState(StepEvent $event)
-    {
-        $session = $this->getSession();
-        $page = $session->getPage();
-        $element = $page->findById("nav-profile");
-        $this->authenticationStateLoggedIn = $element && $element->isVisible();
-
-        // Let the end user know what we did.  (This is mostly because this *is* a demo.)
-        if ($this->authenticationStateLoggedIn) {
-            $this->printDebug('[BeforeStepEvent] A user is signed in.');
-        } else {
-            $this->printDebug('[BeforeStepEvent] A user is not signed in.');
-        }
-    }
 
     /**
      * @Given /^(?:|I )am not signed in$/
@@ -70,6 +53,31 @@ class Authentication extends RawMinkContext
         $mink->fillField('email', $this->username);
         $mink->fillField('password', $this->password);
         $mink->pressButton('Log in');
+
+        $this->waitForPageToLoad();
+    }
+
+    /**
+     * @BeforeStep @maintains-authentication-state
+     */
+    public function beforeStepObtainAuthenticationState(StepEvent $event)
+    {
+        // Don't bother if an exception has occurred.
+        if ($event->hasException()) {
+            return;
+        }
+
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $element = $page->findById("nav-profile");
+        $this->authenticationStateLoggedIn = $element && $element->isVisible();
+
+        // Let the end user know what we did.  (This is mostly because this *is* a demo.)
+        if ($this->authenticationStateLoggedIn) {
+            $this->printDebug('[BeforeStepEvent] A user is signed in.');
+        } else {
+            $this->printDebug('[BeforeStepEvent] A user is not signed in.');
+        }
     }
 
     /**
