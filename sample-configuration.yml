@@ -1,0 +1,4 @@
+meetup:
+  registered-user:
+    username: someuser@example.com
+    password: ********

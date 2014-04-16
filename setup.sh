@@ -24,4 +24,10 @@ mkdir -p selenium && \
     $JAVA -jar selenium/selenium.jar -trustAllSSLCertificates -timeout 30 >&/dev/null &
     PID=$!
     echo $PID > selenium/selenium.pid
+} && \
+{
+    if [ ! -e configuration.yml ]
+    then
+        cp sample-configuration.yml configuration.yml
+    fi
 }
