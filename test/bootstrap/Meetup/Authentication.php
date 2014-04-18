@@ -18,6 +18,8 @@ class Authentication extends AbstractContext
     private $authenticationStateLoggedIn;
 
     /**
+     * Signs the current signed in user out of meetup.com.
+     *
      * @Given /^(?:|I )am not signed in$/
      * @When /^(?:I )sign out$/
      */
@@ -32,6 +34,8 @@ class Authentication extends AbstractContext
     }
 
     /**
+     * Signs a user in to meetup.com.
+     *
      * @Given /^(?:|I )am signed in$/
      * @When /^(?:I )sign in$/
      */

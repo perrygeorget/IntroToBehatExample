@@ -12,7 +12,9 @@ use Symfony\Component\Yaml\Yaml;
 class GroupHome extends AbstractContext
 {
     /**
-     * @Then /^I should see upcoming and past events$/
+     * Asserts that upcoming and past events are visible to the group.
+     *
+     * @Then /^I should see upcoming and past events for the group$/
      */
     public function iCanSeeEventsForTheGroup()
     {
@@ -26,13 +28,12 @@ class GroupHome extends AbstractContext
     }
 
     /**
+     * Asserts that a user can join the current group they are viewing.
+     *
      * @Then /^I should be able to join the group$/
      */
     public function iShouldBeAbleToJoinTheGroup()
     {
-        $session = $this->getSession();
-        $page = $session->getPage();
-
         $main = $this->getMainContext();
         /** @var \Behat\MinkExtension\Context\MinkContext $mink */
         $mink = $main->getSubcontext('mink');
@@ -46,13 +47,12 @@ class GroupHome extends AbstractContext
     }
 
     /**
-     * @Then /^I should be able to leave the group$/
+     * Asserts that a user can leave a group.
+     *
+     * @Then /^I should be able to leave the current group they are viewing/
      */
     public function iShouldBeAbleToLeaveTheGroup()
     {
-        $session = $this->getSession();
-        $page = $session->getPage();
-
         $main = $this->getMainContext();
         /** @var \Behat\MinkExtension\Context\MinkContext $mink */
         $mink = $main->getSubcontext('mink');
