@@ -54,6 +54,8 @@ class Authentication extends AbstractContext
 
         // Sign in
         $mink->clickLink('Log in');
+        $this->waitForPageToLoad();
+
         $mink->fillField('email', $this->username);
         $mink->fillField('password', $this->password);
         $mink->pressButton('Log in');
