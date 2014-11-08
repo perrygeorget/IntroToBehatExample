@@ -49,7 +49,7 @@ class GroupHome extends AbstractContext
     /**
      * Asserts that a user can leave a group.
      *
-     * @Then /^I should be able to leave the current group they are viewing/
+     * @Then /^I should be able to leave the group$/
      */
     public function iShouldBeAbleToLeaveTheGroup()
     {
